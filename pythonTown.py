@@ -1,17 +1,29 @@
+# Codes de couleurs ANSI
+RESET = "\033[0m"
+YELLOW = "\033[93m"  # Actions
+VIOLET = "\033[95m"  # Leia
+RED = "\033[91m"     # Dark Vador
+GREEN = "\033[92m"   # Luke
+BLUE = "\033[94m"    # Wuher
+
 # Classe de base : Personnage
 class Personnage:
     def __init__(self, nom, boisson_favorite="eau"):
         self.__nom = nom
         self.__boisson_favorite = boisson_favorite
+        self.__color = RESET  # Couleur par défaut
+
+    def set_color(self, color):
+        self.__color = color
 
     def parle(self, texte):
-        print(f"{self.__nom} - {texte}")
+        print(f"{self.__color}{self.__nom} - {RESET}{texte}")
 
     def se_presenter(self):
         self.parle(f"Bonjour, je suis {self.quel_est_ton_nom()} et j’aime le {self.__boisson_favorite}.")
 
     def boire(self):
-        print(f"Ah ! Un bon verre de {self.__boisson_favorite} ! GLOUPS !")
+        print(f"{YELLOW}Ah ! Un bon verre de {self.__boisson_favorite} ! GLOUPS !{RESET}")
 
     def quel_est_ton_nom(self):
         return self.__nom
@@ -26,9 +38,10 @@ class Jedi(Personnage):
         super().__init__(nom, boisson_favorite)
         self.__sabre_couleur = sabre_couleur
         self.__popularite = 0
+        self.set_color(GREEN)
 
     def combattre(self, sith):
-        print(f"Le Jedi {self.quel_est_ton_nom()} brandit son sabre {self.__sabre_couleur} et attaque {sith.quel_est_ton_nom()}. ZWOOM !")
+        print(f"{YELLOW}Le Jedi {self.quel_est_ton_nom()} brandit son sabre {self.__sabre_couleur} et attaque {sith.quel_est_ton_nom()}. ZWOOM !{RESET}")
         self.parle("Que la Force soit avec moi !")
 
     def sauver(self, prisonnier):
@@ -46,11 +59,12 @@ class Jedi(Personnage):
 
 # Classe Sith
 class Sith(Personnage):
-    def __init__(self, nom, boisson_favorite="chocolat chaud ", apparence="sombre", prime=5000):
+    def __init__(self, nom, boisson_favorite="chocolat chaud", apparence="sombre", prime=5000):
         super().__init__(nom, boisson_favorite)
         self.__apparence = apparence
         self.__prisonniers = 0
         self.__prime = prime
+        self.set_color(RED)
 
     def capturer(self, cible):
         if cible.est_libre():
@@ -73,6 +87,7 @@ class Rebelle(Personnage):
         super().__init__(nom, boisson_favorite)
         self.__mission = mission
         self.__libre = True
+        self.set_color(VIOLET)
 
     def changer_de_mission(self, nouvelle_mission):
         self.__mission = nouvelle_mission
@@ -99,6 +114,7 @@ class Cantinier(Personnage):
     def __init__(self, nom, boisson_favorite="vin des étoiles", cantina=None):
         super().__init__(nom, boisson_favorite)
         self.__cantina = cantina if cantina else f"Cantina de {nom}"
+        self.set_color(BLUE)
 
     def parle(self, texte):
         super().parle(f"{texte} mon ami.")
@@ -127,19 +143,19 @@ if __name__ == "__main__":
     cantinier.se_presenter()
 
     # Actions
-    print("\nLa Cantina sert des boissons :")
+    print(f"{YELLOW}\nLa Cantina sert des boissons :{RESET}")
     cantinier.servir(rebelle)
     cantinier.servir(sith)
     cantinier.servir(jedi)
 
-    print("\nHistoire :")
+    print(f"{YELLOW}\nHistoire :{RESET}")
     sith.capturer(rebelle)
     jedi.combattre(sith)
     jedi.sauver(rebelle)
     rebelle.changer_de_mission("reconstruire l'Alliance Rebelle")
 
     # Réaffichage des présentations
-    print("\nAprès les événements...")
+    print(f"{YELLOW}\nAprès les événements...{RESET}")
     rebelle.se_presenter()
     sith.se_presenter()
     jedi.se_presenter()
